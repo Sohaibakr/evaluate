@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Annotation tool</title>
+
+    <!-- Bootstrap -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/ribbon.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="screenshot" itemprop="screenshot"
+        href="https://katspaugh.github.io/wavesurfer.js/example/screenshot.png" />
+
+    <!-- wavesurfer.js -->
+    <script src="plugin/wavesurfer.js"></script>
+
+    <!-- plugins -->
+    <script src="plugin/regions.js"></script>
+    <script src="plugin/filesaver.js"></script>
+
+    <!-- App -->
+    <script src="trivia.js"></script>
+    <script src="app.js"></script>
+    <script src="plugin/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <div id="uploadForm">
+        <form class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Upload Files</h1>
+            <label class="form-label" for="excelFile">Excel File</label>
+            <input type="file" class="form-control" id="excelFile" accept=".xls,.xlsx" />
+            <br>
+            <label class="form-label" for="audioFile">Audio File</label>
+            <input type="file" class="form-control" id="audioFile" accept=".mp3,.wav" />
+            <br>
+            <button class="btn btn-success btn-block" id="startBtn">Get started</button>
+            <hr>
+        </form>
+    </div>
+
+    <div class="container" id="annotate">
+        <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li onclick="downloadExcel()"><a href="#" class="orange"><i class="glyphicon glyphicon-download-alt"></i></a></li>
+            </ul>
+
+            <h1 itemprop="name">NCAI Evaluation Tool</h1>
+        </div>
+        <div id="demo">
+            <p id="subtitle" class="text-center text-info">&nbsp;</p>
+            
+            <div id="waveform">
+            </div>
+
+            <div class="row" style="margin: 30px 0">
+                <div class="col-sm-10">
+                    <p>
+                        Click on a region to enter an annotation.<br />
+                        Shift-click plays a region in a loop.
+                    </p>
+                </div>
+
+                <div class="col-sm-2">
+                    <button class="btn orange btn-block" data-action="play">
+                        <span id="play">
+                            <i class="glyphicon glyphicon-play"></i>
+                            Play
+                        </span>
+
+                        <span id="pause" style="display: none">
+                            <i class="glyphicon glyphicon-pause"></i>
+                            Pause
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <form role="form" name="edit" style="opacity: 0; transition: opacity 300ms linear; margin: 30px 0;">
+            <div class="form-group">
+                <label for="start">Start</label>
+                <input class="form-control" id="start" name="start" />
+            </div>
+
+            <div class="form-group">
+                <label for="end">End</label>
+                <input class="form-control" id="end" name="end" />
+            </div>
+
+            <div class="form-group">
+                <label for="note">Note</label>
+                <textarea id="note" class="form-control" rows="3" name="note"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block">Save</button>
+            <center><i>or</i></center>
+            <button type="button" class="btn btn-danger btn-block" data-action="delete-region">Delete</button>
+        </form>
+    </div>
+</body>
+
+</html>
