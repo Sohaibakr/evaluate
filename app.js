@@ -132,7 +132,7 @@ function saveRegions() {
  * Load regions from localStorage.
  */
 function loadRegions(regions) {
-    console.log(regions);
+    console.log(regions)
     regions.forEach(function (region) {
         region = format(region);
         wavesurfer.addRegion(region);
@@ -143,12 +143,19 @@ function loadRegions(regions) {
 
 function format(region) {
     let temp = {
-        "start": region.start,
-        "end": region.end,
+        "start": convertTime(region.start),
+        "end": convertTime(region.end),
         "data": { "note": region.data }
     }
     temp.color = randomColor(0.1);
     return temp;
+}
+
+function convertTime(time) {
+
+    const seconds = Math.round(time * 86400) // converting
+
+    return seconds;
 }
 
 /**
@@ -208,11 +215,11 @@ const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.
 const EXCEL_EXTENSION = '.xlsx';
 
 
-function reFormat(region){
+function reFormat(region) {
     let temp = {
         "start": region.start,
         "end": region.end,
-        "data":  region.data.note 
+        "data": region.data.note
     }
     return temp;
 
