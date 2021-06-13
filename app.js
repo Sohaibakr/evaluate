@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 workbook.SheetNames.forEach(sheet => {
                     let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                     loadRegions(rowObject);
-                    saveRegions();
+                    // saveRegions();
                     //   document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
                 });
             }
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
             e.shiftKey ? region.playLoop() : region.play();
         });
         wavesurfer.on('region-click', editAnnotation);
-        wavesurfer.on('region-updated', saveRegions);
-        wavesurfer.on('region-removed', saveRegions);
+        // wavesurfer.on('region-updated', saveRegions);
+        // wavesurfer.on('region-removed', saveRegions);
         wavesurfer.on('region-in', showNote);
 
         wavesurfer.on('region-play', function (region) {
@@ -224,7 +224,6 @@ function downloadExcel() {
         return reFormat(region);
     });
 
-    console.log(regions);
     const worksheet = XLSX.utils.json_to_sheet(regions);
     const workbook = {
         Sheets: {
