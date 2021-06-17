@@ -107,8 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-
 });
 
 /**
@@ -132,19 +130,21 @@ function saveRegions() {
  * Load regions from localStorage.
  */
 function loadRegions(regions) {
-    console.log(regions)
     regions.forEach(function (region) {
-        region = format(region);
-        wavesurfer.addRegion(region);
+        if ((region.start || region.start == 0) && region.end && region.data) {
+            region = format(region);
+            wavesurfer.addRegion(region);
+        }
     });
+
     document.getElementById("annotate").style.display = "block";
     document.getElementById("uploadForm").style.display = "none";
 }
 
 function format(region) {
     let temp = {
-        "start": convertTime(region.start),
-        "end": convertTime(region.end),
+        "start": checkTimeFormat(region.start),
+        "end": checkTimeFormat(region.end),
         "data": { "note": region.data }
     }
     temp.color = randomColor(0.1);
@@ -152,9 +152,37 @@ function format(region) {
 }
 
 function convertTime(time) {
+    const seconds = Math.round(time * 86400); // converting
 
-    const seconds = Math.round(time * 86400) // converting
+    return seconds;
+}
 
+function checkTimeFormat(time) {
+    if (typeof time == 'string' && time.indexOf(":") >= 0) {
+        // if the format is HH:MM:SS or MM:SS
+        return convertTimeHMS(time);
+    } else if (time < 1 && time > 0) {
+        // if the format is Second
+        return convertTime(time);
+    } else {
+        return time;
+    }
+}
+
+//MM:SS
+function convertTimeHMS(hms) {
+    //the array will be [HH,MM,SS] or [MM,SS]
+    var timeArray = hms.trim().split(':'); // split it at the colons
+    var seconds;
+    if (timeArray.length == 2) {
+        //Compute (MM*60)  + SS
+        // minutes are worth 60 seconds.
+        seconds = parseInt(timeArray[0]) * 60 + parseInt(timeArray[1]);
+    } else {
+        //if the time is HH:MM:SS add the hours to the current seconds
+        //else use the current seconds
+        seconds = parseInt(timeArray[0]) * 60 * 60 + parseInt(timeArray[1]) * 60 + parseInt(timeArray[2])
+    }
     return seconds;
 }
 
