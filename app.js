@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 workbook.SheetNames.forEach(sheet => {
                     let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                     loadRegions(rowObject);
-                    // saveRegions();
-                    //   document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
                 });
             }
         }
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         /* Regions */
-        wavesurfer.on('ready', function () {
+        wavesurfer.on('waveform-ready', function () {
             wavesurfer.enableDragSelection({
                 color: randomColor(0.1)
             });
@@ -74,8 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
             e.shiftKey ? region.playLoop() : region.play();
         });
         wavesurfer.on('region-click', editAnnotation);
-        // wavesurfer.on('region-updated', saveRegions);
-        // wavesurfer.on('region-removed', saveRegions);
         wavesurfer.on('region-in', showNote);
 
         wavesurfer.on('region-play', function (region) {
@@ -109,26 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/**
- * Save annotations to localStorage.
- */
-function saveRegions() {
-    localStorage.regions = JSON.stringify(
-        Object.keys(wavesurfer.regions.list).map(function (id) {
-            let region = wavesurfer.regions.list[id];
-            return {
-                start: region.start,
-                end: region.end,
-                attributes: region.attributes,
-                data: region.data
-            };
-        })
-    );
-}
 
-/**
- * Load regions from localStorage.
- */
 function loadRegions(regions) {
     regions.forEach(function (region) {
         if ((region.start || region.start == 0) && region.end && region.data) {
